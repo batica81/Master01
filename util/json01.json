@@ -1,0 +1,20 @@
+[
+  {
+    "id": "3079",
+    "name": "Vojislav Ristivojevic",
+    "username": "voja_3079",
+    "email": "batica@gmail.com",
+    "password": "testsifra123",
+    "bank_info": {
+      "Broj kreditne kartice": "3787 3449 3671 5000",
+      "Broj racuna": "551-1545661-25"
+    },
+    "phone": "38163555333",
+    "website": "tor64.duckdns.org",
+    "company": {
+      "name": "Scripttic",
+      "catchPhrase": "Multi-layered client-server neural-net",
+      "bs": "harness real-time e-markets"
+    }
+  }
+]
