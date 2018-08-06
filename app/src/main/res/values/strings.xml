@@ -2,7 +2,7 @@
     <string name="app_name">Master01</string>
     <string name="filler">...</string>
     <!--<string name="url">https://cinamontest.duckdns.org/master01_backend/</string>-->
-    <string name="url">https://api.master01.cinamontest.duckdns.org/</string>
+    <string name="url">https://api.master01.duckdns.org/</string>
     <string name="b1_label">Uloguj se</string>
     <string name="b2_label">Prikaži sertifikat</string>
     <string name="username">Korisničko ime:</string>

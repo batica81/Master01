@@ -5,7 +5,10 @@ android {
         config {
             keyAlias 'key0'
             keyPassword 'qwerty'
-            storeFile file('/home/voja/Dropbox/Razno/Kljucevi/androidKey.jks')
+//            Linux:
+//            storeFile file('/home/voja/Dropbox/Razno/Kljucevi/androidKey.jks')
+//            Windows:
+            storeFile file('e:\\Downloads\\Dropbox\\Razno\\Kljucevi\\androidKey.jks')
             storePassword 'qwerty'
         }
     }
