@@ -1,6 +1,5 @@
 package com.example.voja.master01;
 
-import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,12 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.cedarsoftware.util.io.JsonWriter;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,13 +25,10 @@ import java.security.SecureRandom;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -138,13 +132,12 @@ public class MainActivity extends AppCompatActivity {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         InputStream fis = new FileInputStream(certificateFile);
         keyStore.load(fis, clientCertPassword.toCharArray());
-
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
         kmf.init(keyStore, clientCertPassword.toCharArray());
         KeyManager[] keyManagers = kmf.getKeyManagers();
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(keyManagers, null, null);
 
+        SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+        sslContext.init(keyManagers, null, new SecureRandom());
 
         username = String.valueOf(usernameEditText.getText());
         password = String.valueOf(passwordEditText.getText());
@@ -174,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
             inputStream = urlConnection.getInputStream();
         }
 
-//        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
         String jsonString2 = IOUtils.toString(inputStream);
         String jsonString3 = JsonWriter.formatJson(jsonString2);
         myTextView.setText(jsonString3);
@@ -184,7 +176,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showCert() throws IOException, JSONException{
-        myTextView.setText(sviSertifikati[0].toString());
+        if (sviSertifikati != null) {
+            myTextView.setText(sviSertifikati[0].toString());
+        } else {
+            displayExceptionMessage("Nema sertifikata");
+        }
     }
 
     private void killIt() throws IOException, JSONException{
