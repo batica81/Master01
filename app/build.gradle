@@ -6,9 +6,9 @@ android {
             keyAlias 'key0'
             keyPassword 'qwerty'
 //            Linux:
-//            storeFile file('/home/voja/Dropbox/Razno/Kljucevi/androidKey.jks')
+            storeFile file('/home/voja/Dropbox/Razno/Kljucevi/androidKey.jks')
 //            Windows:
-            storeFile file('e:\\Downloads\\Dropbox\\Razno\\Kljucevi\\androidKey.jks')
+//            storeFile file('e:\\Downloads\\Dropbox\\Razno\\Kljucevi\\androidKey.jks')
             storePassword 'qwerty'
         }
     }
@@ -31,6 +31,10 @@ android {
             signingConfig signingConfigs.config
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -39,7 +43,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation "commons-io:commons-io:2.5"
+    implementation 'commons-io:commons-io:2.5'
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation group: 'com.cedarsoftware', name: 'json-io', version: '4.9.10'
+    implementation 'com.cedarsoftware:json-io:4.9.10'
 }
