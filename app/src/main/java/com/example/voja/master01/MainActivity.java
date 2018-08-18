@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private Certificate[] sviSertifikati;
 
 //    private String certificateFile = Environment.getExternalStorageDirectory().getPath() + "batica+1434@gmail.com.p12";
-    private String certificateFile = "/sdcard/Download/batica+1434@gmail.com.p12";
+//    private String certificateFile = "/sdcard/Download/batica+1434@gmail.com.p12";
+    private String certificateFile = "";
 //    private String clientCertPassword = "204700";
 
     private String username =  "";
@@ -187,6 +188,11 @@ public class MainActivity extends AppCompatActivity {
         }
         X509TrustManagerExtensions trustManagerExt = new X509TrustManagerExtensions(x509TrustManager);
 
+        username = String.valueOf(usernameEditText.getText());
+        password = String.valueOf(passwordEditText.getText());
+
+        certificateFile = "/sdcard/Download/" + username + ".p12";
+
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         InputStream fis = new FileInputStream(certificateFile);
 
@@ -202,8 +208,7 @@ public class MainActivity extends AppCompatActivity {
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
         sslContext.init(keyManagers, null, new SecureRandom());
 
-        username = String.valueOf(usernameEditText.getText());
-        password = String.valueOf(passwordEditText.getText());
+
         String myUrl = String.valueOf(mSearchBoxEditText.getText());
         URL url = new URL(myUrl);
         HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
