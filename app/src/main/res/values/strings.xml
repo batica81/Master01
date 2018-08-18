@@ -7,4 +7,6 @@
     <string name="b2_label">Prikaži sertifikat</string>
     <string name="username">Korisničko ime:</string>
     <string name="password">Lozinka:</string>
+    <string name="aktiviraj">Aktiviraj</string>
+    <string name="unesite_pin">Unesite PIN</string>
 </resources>

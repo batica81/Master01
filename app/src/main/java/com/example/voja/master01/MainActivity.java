@@ -1,5 +1,6 @@
 package com.example.voja.master01;
 
+import android.content.Intent;
 import android.net.http.X509TrustManagerExtensions;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    private String certificateFile = Environment.getExternalStorageDirectory().getPath() + "batica+1434@gmail.com.p12";
     private String certificateFile = "/sdcard/Download/batica+1434@gmail.com.p12";
-    private String clientCertPassword = "204700";
+//    private String clientCertPassword = "204700";
 
     private String username =  "";
     private String password = "";
@@ -188,9 +189,14 @@ public class MainActivity extends AppCompatActivity {
 
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         InputStream fis = new FileInputStream(certificateFile);
-        keyStore.load(fis, clientCertPassword.toCharArray());
+
+        Intent intent = getIntent();
+        String enteredPin = intent.getStringExtra("message");
+
+
+        keyStore.load(fis, enteredPin.toCharArray());
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
-        kmf.init(keyStore, clientCertPassword.toCharArray());
+        kmf.init(keyStore, enteredPin.toCharArray());
         KeyManager[] keyManagers = kmf.getKeyManagers();
 
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
@@ -238,6 +244,11 @@ public class MainActivity extends AppCompatActivity {
     private void showCert() throws IOException, JSONException{
         if (sviSertifikati != null) {
             myTextView.setText(sviSertifikati[0].toString());
+
+            Intent intent = new Intent(this, ShowCertActivity.class);
+            intent.putExtra("message", sviSertifikati[0].toString());
+            startActivity(intent);
+
         } else {
             displayExceptionMessage("Nema sertifikata");
         }
