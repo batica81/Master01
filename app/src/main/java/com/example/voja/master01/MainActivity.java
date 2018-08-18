@@ -52,11 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView myTextView;
     private Certificate[] sviSertifikati;
 
-//    private String certificateFile = Environment.getExternalStorageDirectory().getPath() + "batica+1434@gmail.com.p12";
-//    private String certificateFile = "/sdcard/Download/batica+1434@gmail.com.p12";
     private String certificateFile = "";
-//    private String clientCertPassword = "204700";
-
     private String username =  "";
     private String password = "";
 
