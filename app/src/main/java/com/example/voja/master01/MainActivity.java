@@ -1,5 +1,6 @@
 package com.example.voja.master01;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.http.X509TrustManagerExtensions;
 import android.os.StrictMode;
@@ -15,11 +16,15 @@ import com.cedarsoftware.util.io.JsonWriter;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -55,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private String certificateFile = "";
     private String username =  "";
     private String password = "";
+    private String filename = "logfile.log";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
         Button button1 = (Button) findViewById(R.id.button1);
         Button button2 = (Button) findViewById(R.id.button2);
         Button button3 = (Button) findViewById(R.id.button3);
+
+        Button button4 = (Button) findViewById(R.id.button4);
+        Button button5 = (Button) findViewById(R.id.button5);
 
 //todo: Ukljuciti networking on main thread proveru
 
@@ -130,6 +139,52 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // ucitaj fajl
+        button4.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Encryptor enc = new Encryptor();
+
+                try {
+                    FileInputStream inputStream = openFileInput(filename);
+                    String ciphertext = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+                    String password = String.valueOf(passwordEditText.getText());
+                    String plaintext = enc.decrypt(password, ciphertext);
+                    displayExceptionMessage(plaintext);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    displayExceptionMessage(e.getMessage());
+                }
+            }
+        });
+
+        // snimi fajl
+        button5.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+
+                    String password = String.valueOf(passwordEditText.getText());
+                    String plaintext = myTextView.getText().toString();
+                    Encryptor enc = new Encryptor();
+                    FileOutputStream outputStream;
+
+                    try {
+                        String cyphertext = enc.encrypt(password, plaintext);
+                        outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+                        outputStream.write(cyphertext.getBytes());
+                        outputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        displayExceptionMessage(e.getMessage());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    displayExceptionMessage(e.getMessage());
+                }
+            }
+        });
+
     }
 
     public void displayExceptionMessage(String msg) {

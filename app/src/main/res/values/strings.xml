@@ -9,4 +9,6 @@
     <string name="password">Lozinka:</string>
     <string name="aktiviraj">Aktiviraj</string>
     <string name="unesite_pin">Unesite PIN</string>
+    <string name="snimi_podatke">Snimi podatke</string>
+    <string name="u_itaj_podatke">Učitaj podatke</string>
 </resources>
