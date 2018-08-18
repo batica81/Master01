@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        // povezi se
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // prikazi cert
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
@@ -126,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // izlaz
         button3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
@@ -229,7 +232,6 @@ public class MainActivity extends AppCompatActivity {
 
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         trustManagerFactory.init((KeyStore) null);
-        // Find first X509TrustManager in the TrustManagerFactory
         X509TrustManager x509TrustManager = null;
         for (TrustManager trustManager : trustManagerFactory.getTrustManagers()) {
             if (trustManager instanceof X509TrustManager) {
@@ -289,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
             inputStream = urlConnection.getInputStream();
         }
 
-        String jsonString2 = IOUtils.toString(inputStream);
+        String jsonString2 = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
         String jsonString3 = JsonWriter.formatJson(jsonString2);
         myTextView.setText(jsonString3);
 
