@@ -17,7 +17,6 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-                    makeSearch();
+                    makeRequest();
                 } catch (IOException e) {
                     e.printStackTrace();
                     displayExceptionMessage(e.getMessage());
@@ -194,30 +193,27 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         }
 
-    private void validatePinning(
-            X509TrustManagerExtensions trustManagerExt,
-            HttpsURLConnection conn, Set<String> validPins)
-            throws SSLException {
-        String certChainMsg = "";
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            List<X509Certificate> trustedChain = trustedChain(trustManagerExt, conn);
-            for (X509Certificate cert : trustedChain) {
-                byte[] publicKey = cert.getPublicKey().getEncoded();
-                md.update(publicKey, 0, publicKey.length);
-                String pin = Base64.encodeToString(md.digest(), Base64.NO_WRAP);
-                certChainMsg += "    sha256/" + pin + " : " + cert.getIssuerDN().toString() + "\n";
-                if (validPins.contains(pin)) {
-                    return;
+    private void validatePinning(X509TrustManagerExtensions trustManagerExt, HttpsURLConnection conn, Set<String> validPins)
+        throws SSLException {
+            String certChainMsg = "";
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                List<X509Certificate> trustedChain = trustedChain(trustManagerExt, conn);
+                for (X509Certificate cert : trustedChain) {
+                    byte[] publicKey = cert.getPublicKey().getEncoded();
+                    md.update(publicKey, 0, publicKey.length);
+                    String pin = Base64.encodeToString(md.digest(), Base64.NO_WRAP);
+                    certChainMsg += "    sha256/" + pin + " : " + cert.getIssuerDN().toString() + "\n";
+                    if (validPins.contains(pin)) {
+                        return;
+                    }
                 }
+            } catch (NoSuchAlgorithmException e) {
+                throw new SSLException(e);
             }
-        } catch (NoSuchAlgorithmException e) {
-            throw new SSLException(e);
+            throw new SSLPeerUnverifiedException("Certificate pinning failure\n  Peer certificate chain:\n" + certChainMsg);
         }
-        throw new SSLPeerUnverifiedException("Certificate pinning " +
-                "failure\n  Peer certificate chain:\n" + certChainMsg);
-    }
-    private List<X509Certificate> trustedChain(X509TrustManagerExtensions trustManagerExt, HttpsURLConnection conn) throws SSLException {
+        private List<X509Certificate> trustedChain(X509TrustManagerExtensions trustManagerExt, HttpsURLConnection conn) throws SSLException {
         Certificate[] serverCerts = conn.getServerCertificates();
         X509Certificate[] untrustedCerts = Arrays.copyOf(serverCerts, serverCerts.length, X509Certificate[].class);
         String host = conn.getURL().getHost();
@@ -228,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void makeSearch() throws IOException, JSONException, NoSuchAlgorithmException, KeyManagementException, KeyStoreException, CertificateException, UnrecoverableKeyException {
+    private void makeRequest() throws IOException, JSONException, NoSuchAlgorithmException, KeyManagementException, KeyStoreException, CertificateException, UnrecoverableKeyException {
 
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         trustManagerFactory.init((KeyStore) null);
