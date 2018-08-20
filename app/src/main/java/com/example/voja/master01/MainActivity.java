@@ -16,7 +16,6 @@ import com.cedarsoftware.util.io.JsonWriter;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private String username =  "";
     private String password = "";
     private String filename = "logfile.log";
+    private Encryptor enc = new Encryptor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         // ucitaj fajl
         button4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Encryptor enc = new Encryptor();
+//                Encryptor enc = new Encryptor();
 
                 try {
                     FileInputStream inputStream = openFileInput(filename);
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
                     String password = String.valueOf(passwordEditText.getText());
                     String plaintext = myTextView.getText().toString();
-                    Encryptor enc = new Encryptor();
+//                    Encryptor enc = new Encryptor();
                     FileOutputStream outputStream;
 
                     try {
