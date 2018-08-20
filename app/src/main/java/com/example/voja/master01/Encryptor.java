@@ -52,7 +52,7 @@ public class Encryptor {
         return Base64.encodeToString(byteCiphertext, Base64.DEFAULT);
     }
 
-    public String decrypt(String password, String ciphertext) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+    public String decrypt(String password, String ciphertext) throws IllegalArgumentException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
 
         // Extract IV
         byte[] byteCiphertext = Base64.decode(ciphertext, Base64.DEFAULT);

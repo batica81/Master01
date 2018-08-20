@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -37,6 +39,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
@@ -108,7 +114,26 @@ public class MainActivity extends AppCompatActivity {
                 } catch (KeyStoreException e) {
                     e.printStackTrace();
                     displayExceptionMessage(e.getMessage());
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                    displayExceptionMessage(e.getMessage());
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                    displayExceptionMessage(e.getMessage());
+                } catch (InvalidAlgorithmParameterException e) {
+                    e.printStackTrace();
+                    displayExceptionMessage(e.getMessage());
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                    displayExceptionMessage(e.getMessage());
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                    displayExceptionMessage(e.getMessage());
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                    displayExceptionMessage(e.getMessage());
                 }
+
             }
         });
 
@@ -224,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void makeRequest() throws IOException, JSONException, NoSuchAlgorithmException, KeyManagementException, KeyStoreException, CertificateException, UnrecoverableKeyException {
+    private void makeRequest() throws IllegalArgumentException, IOException, JSONException, NoSuchAlgorithmException, KeyManagementException, KeyStoreException, CertificateException, UnrecoverableKeyException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException {
 
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         trustManagerFactory.init((KeyStore) null);
@@ -288,8 +313,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String jsonString2 = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        String jsonString3 = JsonWriter.formatJson(jsonString2);
-        myTextView.setText(jsonString3);
+        String tempString = enc.decrypt(password, jsonString2);
+        try {
+
+            String jsonString3 = JsonWriter.formatJson(tempString);
+            myTextView.setText(jsonString3);
+        } catch (Exception e) {
+            e.printStackTrace();
+            displayExceptionMessage(e.getMessage());
+        }
 
         sviSertifikati = urlConnection.getServerCertificates();
         urlConnection.disconnect();
